@@ -21,12 +21,6 @@ This package builds the `mtp-clean` branch by [am17an](https://github.com/am17an
 makepkg -si
 ```
 
-Or install a pre-built package:
-
-```bash
-sudo pacman -U llama-cpp-mtp-hip-*.pkg.tar.zst
-```
-
 ## License
 
 The PKGBUILD and supporting files in this repository are GPLv3. The upstream
