@@ -1,0 +1,10 @@
+# Build artifacts (contain host-specific paths like /home/*)
+build/
+pkg/
+*.zst
+
+# Source checkout from PKGBUILD (upstream, not part of this package project)
+src/llama.cpp/
+
+# Bare mirror from makepkg source prep
+llama.cpp/

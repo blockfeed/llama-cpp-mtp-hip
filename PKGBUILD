@@ -15,6 +15,7 @@ optdepends=(
 )
 provides=('llama.cpp' 'llama-cli' 'llama-server')
 conflicts=('llama-cpp-hip' 'llama.cpp-git')
+# To pin to a specific commit, replace #branch=mtp-clean with #commit=<full-sha>
 source=("git+https://github.com/am17an/llama.cpp.git#branch=mtp-clean")
 sha256sums=('SKIP')
 
