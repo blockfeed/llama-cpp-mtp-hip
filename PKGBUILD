@@ -1,10 +1,10 @@
 # Maintainer: blockfeed <blockfeed@users.noreply.github.com>
 pkgname=llama-cpp-mtp-hip
 _pkgver=1.0.0
-pkgver=1.0.0.mtp.r0
+pkgver=1.0.0.mtp.r1
 pkgrel=1
 epoch=
-pkgdesc='llama.cpp with MTP speculative decoding support (HIP/ROCm backend, am17an/mtp-clean branch)'
+pkgdesc='llama.cpp with draft-mtp speculative decoding support (HIP/ROCm backend, am17an/mtp-clean branch)'
 url='https://github.com/am17an/llama.cpp/tree/mtp-clean'
 license=('MIT')
 arch=('x86_64')
@@ -16,11 +16,11 @@ optdepends=(
 provides=('llama.cpp' 'llama-cli' 'llama-server')
 conflicts=('llama-cpp-hip' 'llama.cpp-git')
 # To pin to a specific commit, replace #branch=mtp-clean with #commit=<full-sha>
-source=("git+https://github.com/am17an/llama.cpp.git#branch=mtp-clean")
+source=("file:///tmp/llama-cpp-mtp-bare#branch=mtp-clean")
 sha256sums=('SKIP')
 
 prepare() {
-  # The source git+ protocol may produce a bare repo; ensure a working tree exists
+  # makepkg may create a bare repo in llama.cpp/; convert to working tree
   if [ ! -f "llama.cpp/CMakeLists.txt" ]; then
     rm -rf llama.cpp
     git clone --branch mtp-clean --depth 1 https://github.com/am17an/llama.cpp.git llama.cpp
