@@ -5,6 +5,34 @@ draft-mtp speculative decoding, using the HIP/ROCm backend for AMD GPUs. This
 package builds the `mtp-clean` branch by [am17an](https://github.com/am17an),
 which provides MTP and ngram-mod speculative decoding for ROCm.
 
+## Known Bug: Server Crash with Prompt Caching Enabled
+
+**Symptom:** The server crashes mid-prompt when a second request arrives while the MTP
+model is processing. The abort is in `llama_memory_recurrent::state_write`:
+
+```
+GGML_ABORT("recurrent state read/write is not supported with partial rollback");
+```
+
+**Root cause:** The `mtp-clean` branch implements MTP draft heads using
+`llama_memory_recurrent`. When a second request arrives while a slot is mid-prompt,
+the server calls `prompt_save` to serialize KV state for prefix reuse. That hits
+`llama_memory_recurrent::state_write`, which unconditionally aborts. This is a missing
+feature in the upstream `am17an/mtp-clean` branch — the recurrent memory used for
+draft heads cannot be serialized.
+
+**Fix:** Add `--no-cache-prompt` to your server invocation. This disables the server's
+prompt cache and prevents `prompt_save` from being called.
+
+**Trade-off:** Disabling prompt caching means repeated requests with the same system
+prompt or prefix won't get KV reuse between turns. With `--parallel 1`, the speculative
+decoding throughput gain (~1.5–2x) far outweighs losing cross-request prefix caching.
+
+The underlying bug is in `am17an/mtp-clean`. Watch that repo for a fix if you want to
+re-enable prompt caching.
+
+---
+
 ## What is MTP?
 
 Multi-Token Prediction (MTP) lets a draft model guess several tokens at once and
