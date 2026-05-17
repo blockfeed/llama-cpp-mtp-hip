@@ -1,5 +1,10 @@
 # llama-cpp-mtp-hip
 
+> **This repository is archived and no longer needed.**
+> MTP speculative decoding was merged into llama.cpp mainline in
+> [b9180](https://github.com/ggml-org/llama.cpp/releases/tag/b9180).
+> Use the official llama.cpp release directly.
+
 Arch Linux PKGBUILD for [llama.cpp](https://github.com/ggml-org/llama.cpp) with
 draft-mtp speculative decoding, using the HIP/ROCm backend for AMD GPUs. This
 package builds the `mtp-clean` branch by [am17an](https://github.com/am17an),
